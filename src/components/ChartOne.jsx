@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import Chart1_Data from '../Data/returns.json';
+import Logo from "../assets/logo.png";
 
 const chart1_data = Chart1_Data.data.NIFTY_MODSS;
 
@@ -11,14 +12,14 @@ const ChartOne = () => {
                 name: 'PnL',
                 data: chart1_data.map(item => item.pnl), // pnl values from the data
             },
-            
+
         ],
     });
 
     // min and max values from the data
     const minPnl = Math.min(...chart1_data.map(item => item.pnl));
     const maxPnl = Math.max(...chart1_data.map(item => item.pnl));
-    
+
 
     const options = {
         legend: {
@@ -29,7 +30,7 @@ const ChartOne = () => {
         colors: ['#3C50E0', '#80CAEE'],
         chart: {
             fontFamily: 'Montserrat, sans-serif',
-            height: 335,
+            height: 375,
             type: 'area',
             dropShadow: {
                 enabled: true,
@@ -115,7 +116,7 @@ const ChartOne = () => {
                 min: minPnl, // min value based on data
                 max: maxPnl, // max value based on data
             },
-            
+
         ],
     };
 
@@ -126,14 +127,11 @@ const ChartOne = () => {
     };
 
     return (
-        <div className="relative">
-            {/* Watermark image */}
-            
-            
-
-            {/* Chart */}
-            <div className="mx-auto z-10">
-                <ReactApexChart options={options} series={state.series} type="area" height={550} />
+        <div className="chart">
+            <h3 className='title'>DropDown Periods</h3>
+            <img src={Logo} alt="Watermark logo" />
+            <div className="chart-wrapper">
+                <ReactApexChart options={options} series={state.series} type="area" height={375} />
             </div>
         </div>
     );

@@ -1,5 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  max-width: 1920px;
+  margin: auto;
+  
+}
+
+.app-container {
+  background-color: #64748b30;
+  padding: 10px;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 4rem;
+  border-radius: 3px;
+ 
+  
+}
+.chart-container {
+  background-color: #ffffff;
+  width: 65%;
+  padding: 10px;
+  border-radius: 3px;
+ 
+ 
+}
+.table-container {
+  background-color: #ffffff;
+  width: 35%;
+  /* padding: 10px; */
+  border-radius: 3px;
+  overflow-x: auto;
+  
+  
+}
+
+/* Chart */
+
+.chart {
+  position: relative;
+  z-index: 5;
+}
+.chart img {
+  position: absolute;
+  width: 250px;
+  opacity: 25%;
+  top: calc(50% - 40px);
+  left: calc(50% - 40px);
+  z-index: 1;
+  pointer-events: none;
+}
 
 
+/* util */
+.title {
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 16px;
+ 
+}
+
+
+/* TableComponent */
+
+.table{
+  width: 100%;
+}
+
+
+
+.table thead {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  background-color: rgba(115, 115, 115, 0.403);
+
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+}
+
+.even-row {
+  background-color: #f7fafc;
+}
+
+.odd-row {
+  background-color: #ffffff;
+}
+
+.table tbody tr:hover {
+  background-color: #edf2f7;
+}
+
+.table tbody tr td {
+  border-bottom: 1px solid #cbd5e0;
+  color: #4a5568;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr th {
+  color: #2d3748;
+}
+
+
+
+/* Media Query for small screens */
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+    margin: -1px;
+  }
+  .chart-container,
+  .table-container {
+    width: 100%;
+  }
+}
