@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import Chart1_Data from '../Data/returns.json';
 import PeriodsData from '../Data/ddperiod.json';
 
-const chart1_data = Chart1_Data.data.NIFTY_MODSS;
+const chart1_data = Chart1_Data.data.combined;
 const periodsData = PeriodsData.data;
 
 const ChartOne = () => {
@@ -11,6 +11,7 @@ const ChartOne = () => {
         const chartContainerRef = useRef(null);
 
         useEffect(() => {
+            
             const chartOptions = {
                 layout: {
                     textColor: 'black',
@@ -22,11 +23,21 @@ const ChartOne = () => {
             const lineSeries = chart.addLineSeries();
 
             // Extracting data from chart1_data
-            const data = chart1_data.map(item => ({
-                time: item.date,  // Assuming the date is formatted correctly
-                value: item.cumsum,
-                color: checkPeriodColor(item.date) // Checking if the time falls within any period
-            }));
+            const data = chart1_data.map(item => {
+                // Parse the date string into a Date object
+                const date = new Date(item.date);
+            
+                // Format the date as required (e.g., YYYY-MM-DD)
+                const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            
+                return {
+                    time: formattedDate,
+                    value: item.cumsum,
+                    color: checkPeriodColor(formattedDate) // Checking if the time falls within any period
+                };
+            });
+
+            console.log(data);
 
             lineSeries.setData(data);
 
@@ -46,6 +57,8 @@ const ChartOne = () => {
             }
             return undefined; // Default color if no matching period found
         };
+
+        
 
         return (
             <div ref={chartContainerRef} style={{ width: '100%', height: '400px' }}></div>
