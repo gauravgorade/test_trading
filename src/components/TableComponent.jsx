@@ -16,8 +16,8 @@ const TableComponent = () => {
                 <tbody>
                     {tableData.map((item, index) => (
                         <tr key={index} className={`${index % 2 === 0 ? 'even-row' : 'odd-row'}`}> {/* Add classes for odd and even rows */}
-                            <td>{`${item.Start_Date} to ${item.End_Date}`}</td>
-                            <td>{item.Max_Drawdown}</td>
+                            <td className='bold'>{`${item.Start_Date} to ${item.End_Date}`}</td>
+                            <td className='red-highlight'>{item.Max_Drawdown}</td>
                             <td>{item.Drawdown_days}</td>
                         </tr>
                     ))}

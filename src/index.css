@@ -65,6 +65,12 @@
  
 }
 
+.red-highlight{
+  color: red !important;
+}
+.bold{
+  font-weight: bold;
+}
 
 /* TableComponent */
 
