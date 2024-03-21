@@ -41,7 +41,7 @@ const ChartOne = () => {
                 opacity: 0.1,
             },
             toolbar: {
-                show: false,
+                show: true,
             },
         },
         responsive: [
