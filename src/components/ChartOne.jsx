@@ -1,138 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import ReactApexChart from 'react-apexcharts';
+import { createChart, ColorType } from 'lightweight-charts';
+import React, { useEffect, useRef } from 'react';
 import Chart1_Data from '../Data/returns.json';
-import Logo from "../assets/logo.png";
+import PeriodsData from '../Data/ddperiod.json';
 
 const chart1_data = Chart1_Data.data.NIFTY_MODSS;
+const periodsData = PeriodsData.data;
 
 const ChartOne = () => {
-    const [state, setState] = useState({
-        series: [
-            {
-                name: 'cumsum',
-                data: chart1_data.map(item => item.cumsum), // pnl values from the data
-            },
+    const ChartComponent = () => {
+        const chartContainerRef = useRef(null);
 
-        ],
-    });
+        useEffect(() => {
+            const chartOptions = {
+                layout: {
+                    textColor: 'black',
+                    background: { type: ColorType.Solid, color: 'white' }
+                }
+            };
 
-    // min and max values from the data
-    const minPnl = Math.min(...chart1_data.map(item => item.cumsum));
-    const maxPnl = Math.max(...chart1_data.map(item => item.cumsum));
+            const chart = createChart(chartContainerRef.current, chartOptions);
+            const lineSeries = chart.addLineSeries();
 
+            // Extracting data from chart1_data
+            const data = chart1_data.map(item => ({
+                time: item.date,  // Assuming the date is formatted correctly
+                value: item.cumsum,
+                color: checkPeriodColor(item.date) // Checking if the time falls within any period
+            }));
 
-    const options = {
-        legend: {
-            show: true,
-            position: 'top',
-            horizontalAlign: 'left',
-        },
-        colors: ['#3C50E0', '#80CAEE'],
-        chart: {
-            fontFamily: 'Montserrat, sans-serif',
-            height: 375,
-            type: 'area',
-            dropShadow: {
-                enabled: true,
-                color: '#623CEA14',
-                top: 10,
-                blur: 4,
-                left: 0,
-                opacity: 0.1,
-            },
-            toolbar: {
-                show: true,
-            },
-        },
-        responsive: [
-            {
-                breakpoint: 1024,
-                options: {
-                    chart: {
-                        height: 300,
-                    },
-                },
-            },
-            {
-                breakpoint: 1366,
-                options: {
-                    chart: {
-                        height: 350,
-                    },
-                },
-            },
-        ],
-        stroke: {
-            width: [2, 2],
-            curve: 'smooth',
-        },
-        grid: {
-            xaxis: {
-                lines: {
-                    show: true,
-                },
-            },
-            yaxis: {
-                lines: {
-                    show: true,
-                },
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        markers: {
-            size: 0,
-            colors: '#fff',
-            strokeColors: ['#3056D3', '#80CAEE'],
-            strokeWidth: 3,
-            strokeOpacity: 0.9,
-            strokeDashArray: 0,
-            fillOpacity: 1,
-            discrete: [],
-            hover: {
-                size: undefined,
-                sizeOffset: 5,
-            },
-        },
-        xaxis: {
-            type: 'category',
-            categories: chart1_data.map(item => item.date), // date values from the data
-            axisBorder: {
-                show: false,
-            },
-            axisTicks: {
-                show: false,
-            },
-        },
-        yaxis: [
-            {
-                title: {
-                    text: 'PnL',
-                    style: {
-                        fontSize: '12px',
-                    },
-                },
-                min: minPnl, // min value based on data
-                max: maxPnl, // max value based on data
-            },
+            lineSeries.setData(data);
 
-        ],
-    };
+            // Here, you can add code to create custom time markers or other desired features
 
-    const handleReset = () => {
-        setState(prevState => ({
-            ...prevState,
-        }));
+            return () => {
+                chart.remove();
+            };
+        }, []);
+
+        // Function to check if the provided time falls within any period and return color accordingly
+        const checkPeriodColor = (time) => {
+            for (let i = 0; i < periodsData.length; i++) {
+                if (time >= periodsData[i].Start_Date && time <= periodsData[i].End_Date) {
+                    return 'red'; // Change to red if time falls within any period
+                }
+            }
+            return undefined; // Default color if no matching period found
+        };
+
+        return (
+            <div ref={chartContainerRef} style={{ width: '100%', height: '400px' }}></div>
+        );
     };
 
     return (
-        <div className="chart">
-            <h3 className='title'>DropDown Periods</h3>
-            <img src={Logo} alt="Watermark logo" />
-            <div className="chart-wrapper">
-                <ReactApexChart options={options} series={state.series} type="area" height={375} />
-            </div>
+        <div>
+            {/* Add any other components or content here */}
+            <ChartComponent />
         </div>
     );
 };
