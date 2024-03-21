@@ -9,16 +9,16 @@ const ChartOne = () => {
     const [state, setState] = useState({
         series: [
             {
-                name: 'PnL',
-                data: chart1_data.map(item => item.pnl), // pnl values from the data
+                name: 'cumsum',
+                data: chart1_data.map(item => item.cumsum), // pnl values from the data
             },
 
         ],
     });
 
     // min and max values from the data
-    const minPnl = Math.min(...chart1_data.map(item => item.pnl));
-    const maxPnl = Math.max(...chart1_data.map(item => item.pnl));
+    const minPnl = Math.min(...chart1_data.map(item => item.cumsum));
+    const maxPnl = Math.max(...chart1_data.map(item => item.cumsum));
 
 
     const options = {
